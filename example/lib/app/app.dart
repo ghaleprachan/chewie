@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:chewie/chewie.dart';
 import 'package:chewie_example/app/theme.dart';
 import 'package:flutter/material.dart';
+
 // ignore: depend_on_referenced_packages
 import 'package:video_player/video_player.dart';
 
@@ -48,14 +49,9 @@ class _ChewieDemoState extends State<ChewieDemo> {
   ];
 
   Future<void> initializePlayer() async {
-    _videoPlayerController1 =
-        VideoPlayerController.network(srcs[currPlayIndex]);
-    _videoPlayerController2 =
-        VideoPlayerController.network(srcs[currPlayIndex]);
-    await Future.wait([
-      _videoPlayerController1.initialize(),
-      _videoPlayerController2.initialize()
-    ]);
+    _videoPlayerController1 = VideoPlayerController.network(srcs[currPlayIndex]);
+    _videoPlayerController2 = VideoPlayerController.network(srcs[currPlayIndex]);
+    await Future.wait([_videoPlayerController1.initialize(), _videoPlayerController2.initialize()]);
     _createChewieController();
     setState(() {});
   }
@@ -76,7 +72,7 @@ class _ChewieDemoState extends State<ChewieDemo> {
     //     ),
     //   ];
 
-    final subtitles = [
+    /*final subtitles = [
       Subtitle(
         index: 0,
         start: Duration.zero,
@@ -108,13 +104,13 @@ class _ChewieDemoState extends State<ChewieDemo> {
         //   style: TextStyle(color: Colors.amber, fontSize: 22, fontStyle: FontStyle.italic),
         // ),
       ),
-    ];
+    ];*/
 
     _chewieController = ChewieController(
       videoPlayerController: _videoPlayerController1,
       autoPlay: true,
       looping: true,
-      progressIndicatorDelay:
+      /*progressIndicatorDelay:
           bufferDelay != null ? Duration(milliseconds: bufferDelay!) : null,
 
       additionalOptions: (context) {
@@ -125,9 +121,9 @@ class _ChewieDemoState extends State<ChewieDemo> {
             title: 'Toggle Video Src',
           ),
         ];
-      },
-      subtitle: Subtitles(subtitles),
-      subtitleBuilder: (context, dynamic subtitle) => Container(
+      },*/
+      // subtitle: Subtitles(subtitles),
+      /*subtitleBuilder: (context, dynamic subtitle) => Container(
         padding: const EdgeInsets.all(10.0),
         child: subtitle is InlineSpan
             ? RichText(
@@ -137,9 +133,9 @@ class _ChewieDemoState extends State<ChewieDemo> {
                 subtitle.toString(),
                 style: const TextStyle(color: Colors.black),
               ),
-      ),
+      ),*/
 
-      hideControlsTimer: const Duration(seconds: 1),
+      // hideControlsTimer: const Duration(seconds: 1),
 
       // Try playing around with some of these other options:
 
@@ -153,7 +149,11 @@ class _ChewieDemoState extends State<ChewieDemo> {
       // placeholder: Container(
       //   color: Colors.grey,
       // ),
-      // autoInitialize: true,
+      // autoInitialize: true,]
+
+      downLoadVideoBuilder: (){
+        print("Prachan Downloaded");
+      }
     );
   }
 
@@ -183,11 +183,12 @@ class _ChewieDemoState extends State<ChewieDemo> {
           children: <Widget>[
             Expanded(
               child: Center(
-                child: _chewieController != null &&
-                        _chewieController!
-                            .videoPlayerController.value.isInitialized
-                    ? Chewie(
-                        controller: _chewieController!,
+                child: _chewieController != null && _chewieController!.videoPlayerController.value.isInitialized
+                    ? AspectRatio(
+                        aspectRatio: _chewieController!.videoPlayerController.value.aspectRatio,
+                        child: Chewie(
+                          controller: _chewieController!,
+                        ),
                       )
                     : Column(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -199,7 +200,7 @@ class _ChewieDemoState extends State<ChewieDemo> {
                       ),
               ),
             ),
-            TextButton(
+            /*TextButton(
               onPressed: () {
                 _chewieController?.enterFullScreen();
               },
@@ -232,7 +233,7 @@ class _ChewieDemoState extends State<ChewieDemo> {
                           videoPlayerController: _videoPlayerController2,
                           autoPlay: true,
                           looping: true,
-                          /* subtitle: Subtitles([
+                          */ /* subtitle: Subtitles([
                             Subtitle(
                               index: 0,
                               start: Duration.zero,
@@ -252,7 +253,7 @@ class _ChewieDemoState extends State<ChewieDemo> {
                               subtitle,
                               style: const TextStyle(color: Colors.white),
                             ),
-                          ), */
+                          ), */ /*
                         );
                       });
                     },
@@ -324,7 +325,7 @@ class _ChewieDemoState extends State<ChewieDemo> {
                     }
                   },
                 ),
-              )
+              )*/
           ],
         ),
       ),
@@ -333,11 +334,11 @@ class _ChewieDemoState extends State<ChewieDemo> {
 }
 
 class DelaySlider extends StatefulWidget {
-  const DelaySlider({Key? key, required this.delay, required this.onSave})
-      : super(key: key);
+  const DelaySlider({Key? key, required this.delay, required this.onSave}) : super(key: key);
 
   final int? delay;
   final void Function(int?) onSave;
+
   @override
   State<DelaySlider> createState() => _DelaySliderState();
 }
