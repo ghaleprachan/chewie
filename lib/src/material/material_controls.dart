@@ -270,7 +270,7 @@ class _MaterialControlsState extends State<MaterialControls> with SingleTickerPr
       opacity: notifier.hideStuff ? 0.0 : 1.0,
       duration: const Duration(milliseconds: 300),
       child: Container(
-        height: 50 /*barHeight + (chewieController.isFullScreen ? 10.0 : 0)*/,
+        height: 50 + (chewieController.isFullScreen ? 10.0 : 0) /*barHeight + (chewieController.isFullScreen ? 10.0 : 0)*/,
         color: const Color(0xff373D57),
         /*padding: EdgeInsets.only(
           left: 20,
@@ -282,21 +282,6 @@ class _MaterialControlsState extends State<MaterialControls> with SingleTickerPr
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              /*Flexible(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    if (chewieController.isLive) const Expanded(child: Text('LIVE')) else _buildPosition(iconColor),
-                    if (chewieController.allowMuting) _buildMuteButton(controller),
-                    const Spacer(),
-                    _buildDownloadButton(),
-                    if (chewieController.allowFullScreen) _buildExpandButton(),
-                  ],
-                ),
-              ),
-              SizedBox(
-                height: chewieController.isFullScreen ? 15.0 : 0,
-              ),*/
               _buildPlayPauseWidget(),
               if (!chewieController.isLive)
                 Expanded(
