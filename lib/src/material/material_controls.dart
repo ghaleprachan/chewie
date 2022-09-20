@@ -89,8 +89,10 @@ class _MaterialControlsState extends State<MaterialControls> with SingleTickerPr
                 )
               else
                 _buildHitArea(),
+
+              _buildNavigationIcon(),
               // Action bar is not required for our player for now
-              // _buildActionBar(),
+              /// _buildActionBar(),
               Column(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: <Widget>[
@@ -137,6 +139,21 @@ class _MaterialControlsState extends State<MaterialControls> with SingleTickerPr
     }
 
     super.didChangeDependencies();
+  }
+
+  Widget _buildNavigationIcon() {
+    return SafeArea(
+      child: AnimatedOpacity(
+        opacity: notifier.hideStuff ? 0.0 : 1.0,
+        duration: const Duration(milliseconds: 250),
+        child: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
+        ),
+      ),
+    );
   }
 
   Widget _buildActionBar() {
