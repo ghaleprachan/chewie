@@ -14,6 +14,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:video_player/video_player.dart';
 
+import '../animated_play_pause.dart';
+
 class MaterialControls extends StatefulWidget {
   const MaterialControls({
     this.showPlayButton = true,
@@ -268,14 +270,53 @@ class _MaterialControlsState extends State<MaterialControls> with SingleTickerPr
       opacity: notifier.hideStuff ? 0.0 : 1.0,
       duration: const Duration(milliseconds: 300),
       child: Container(
-        height: barHeight + (chewieController.isFullScreen ? 10.0 : 0),
-        padding: EdgeInsets.only(
+        height: 50 /*barHeight + (chewieController.isFullScreen ? 10.0 : 0)*/,
+        color: const Color(0xff373D57),
+        /*padding: EdgeInsets.only(
           left: 20,
           bottom: !chewieController.isFullScreen ? 10.0 : 0,
-        ),
+        ),*/
         child: SafeArea(
           bottom: chewieController.isFullScreen,
-          child: Column(
+          child: Row(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              /*Flexible(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    if (chewieController.isLive) const Expanded(child: Text('LIVE')) else _buildPosition(iconColor),
+                    if (chewieController.allowMuting) _buildMuteButton(controller),
+                    const Spacer(),
+                    _buildDownloadButton(),
+                    if (chewieController.allowFullScreen) _buildExpandButton(),
+                  ],
+                ),
+              ),
+              SizedBox(
+                height: chewieController.isFullScreen ? 15.0 : 0,
+              ),*/
+              _buildPlayPauseWidget(),
+              if (!chewieController.isLive)
+                Expanded(
+                  child: Container(
+                    padding: const EdgeInsets.only(right: 8),
+                    child: Row(
+                      children: [
+                        _buildProgressBar(),
+                      ],
+                    ),
+                  ),
+                ),
+              _buildCustomPosition(),
+              _buildDownloadButton(),
+              if (chewieController.allowFullScreen) _buildExpandButton(),
+            ],
+          )
+
+          // This is default bottom bar UI this is hidden to make out custom UI
+          /*Column(
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -306,9 +347,27 @@ class _MaterialControlsState extends State<MaterialControls> with SingleTickerPr
                   ),
                 ),
             ],
-          ),
+          )*/
+          ,
         ),
       ),
+    );
+  }
+
+  IconButton _buildPlayPauseWidget() {
+    final bool isFinished = _latestValue.position >= _latestValue.duration;
+    final bool showPlayButton = widget.showPlayButton && !_dragging && !notifier.hideStuff;
+    return IconButton(
+      padding: const EdgeInsets.only(left: 12, right: 8, top: 0, bottom: 0),
+      constraints: const BoxConstraints(),
+      icon: isFinished
+          ? const Icon(Icons.replay, color: Colors.white, size: 20)
+          : AnimatedPlayPause(
+              color: Colors.white,
+              playing: controller.value.isPlaying,
+              size: 20,
+            ),
+      onPressed: _playPause,
     );
   }
 
@@ -350,21 +409,14 @@ class _MaterialControlsState extends State<MaterialControls> with SingleTickerPr
       onTap: () {
         _chewieController?.onDownloadVideo();
       },
-      child: AnimatedOpacity(
-        opacity: notifier.hideStuff ? 0.0 : 1.0,
-        duration: const Duration(milliseconds: 300),
-        child: Container(
-          height: barHeight + (chewieController.isFullScreen ? 15.0 : 0),
-          margin: const EdgeInsets.only(right: 12.0),
-          padding: const EdgeInsets.only(
-            left: 8.0,
-            right: 8.0,
-          ),
-          child: const Center(
-            child: Icon(
-              Icons.file_download_outlined,
-              color: Colors.white,
-            ),
+      child: Container(
+        height: barHeight + (chewieController.isFullScreen ? 15.0 : 0),
+        margin: const EdgeInsets.only(right: 8.0, left: 8),
+        child: const Center(
+          child: Icon(
+            Icons.file_download_outlined,
+            color: Colors.white,
+            size: 20,
           ),
         ),
       ),
@@ -374,21 +426,14 @@ class _MaterialControlsState extends State<MaterialControls> with SingleTickerPr
   GestureDetector _buildExpandButton() {
     return GestureDetector(
       onTap: _onExpandCollapse,
-      child: AnimatedOpacity(
-        opacity: notifier.hideStuff ? 0.0 : 1.0,
-        duration: const Duration(milliseconds: 300),
-        child: Container(
-          height: barHeight + (chewieController.isFullScreen ? 15.0 : 0),
-          margin: const EdgeInsets.only(right: 12.0),
-          padding: const EdgeInsets.only(
-            left: 8.0,
-            right: 8.0,
-          ),
-          child: Center(
-            child: Icon(
-              chewieController.isFullScreen ? Icons.fullscreen_exit : Icons.fullscreen,
-              color: Colors.white,
-            ),
+      child: Container(
+        height: barHeight + (chewieController.isFullScreen ? 15.0 : 0),
+        margin: const EdgeInsets.only(right: 12.0),
+        child: Center(
+          child: Icon(
+            chewieController.isFullScreen ? Icons.fullscreen_exit : Icons.fullscreen,
+            color: Colors.white,
+            size: 20,
           ),
         ),
       ),
@@ -410,7 +455,8 @@ class _MaterialControlsState extends State<MaterialControls> with SingleTickerPr
             _cancelAndRestartTimer();
           }
         } else {
-          _playPause();
+          // Don't play while clicking outside of other content
+          // _playPause();
 
           setState(() {
             notifier.hideStuff = true;
@@ -448,6 +494,20 @@ class _MaterialControlsState extends State<MaterialControls> with SingleTickerPr
     if (_latestValue.isPlaying) {
       _startHideTimer();
     }
+  }
+
+  Widget _buildCustomPosition() {
+    final position = _latestValue.position;
+    final duration = _latestValue.duration;
+
+    return Text(
+      '${formatDuration(duration)}',
+      style: TextStyle(
+        fontSize: 12.0,
+        color: Colors.white.withOpacity(.75),
+        fontWeight: FontWeight.normal,
+      ),
+    );
   }
 
   Widget _buildPosition(Color? iconColor) {
