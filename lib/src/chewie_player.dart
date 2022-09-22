@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:chewie/chewie.dart';
 import 'package:chewie/src/chewie_progress_colors.dart';
 import 'package:chewie/src/models/option_item.dart';
 import 'package:chewie/src/models/options_translation.dart';
@@ -234,6 +235,12 @@ class ChewieState extends State<Chewie> {
   }
 }
 
+enum VideoDownloadStatus {
+  notDownloaded,
+  downloading,
+  downloaded,
+}
+
 /// The ChewieController is used to configure and drive the Chewie Player
 /// Widgets. It provides methods to control playback, such as [pause] and
 /// [play], as well as methods that control the visual appearance of the player,
@@ -251,6 +258,7 @@ class ChewieController extends ChangeNotifier {
     this.aspectRatio,
     this.autoInitialize = false,
     this.autoPlay = false,
+    this.videoDownloadStatus = VideoDownloadStatus.notDownloaded,
     this.startAt,
     this.looping = false,
     this.fullScreenByDefault = false,
@@ -298,6 +306,8 @@ class ChewieController extends ChangeNotifier {
     double? aspectRatio,
     bool? autoInitialize,
     bool? autoPlay,
+    bool? isDownloaded,
+    VideoDownloadStatus? videoDownloadStatus,
     Duration? startAt,
     bool? looping,
     bool? fullScreenByDefault,
@@ -345,6 +355,7 @@ class ChewieController extends ChangeNotifier {
       aspectRatio: aspectRatio ?? this.aspectRatio,
       autoInitialize: autoInitialize ?? this.autoInitialize,
       autoPlay: autoPlay ?? this.autoPlay,
+      videoDownloadStatus: videoDownloadStatus ?? this.videoDownloadStatus,
       startAt: startAt ?? this.startAt,
       looping: looping ?? this.looping,
       fullScreenByDefault: fullScreenByDefault ?? this.fullScreenByDefault,
@@ -421,6 +432,10 @@ class ChewieController extends ChangeNotifier {
 
   /// Play the video as soon as it's displayed
   final bool autoPlay;
+
+  /// Find if video is downloaded
+
+  VideoDownloadStatus videoDownloadStatus;
 
   /// Start video at a certain position
   final Duration? startAt;
@@ -519,6 +534,11 @@ class ChewieController extends ChangeNotifier {
 
   void onDownloadVideo() {
     downLoadVideoBuilder?.call();
+  }
+
+  void updateVideoDownloadStatus(VideoDownloadStatus videoDownloadStatus) {
+    this.videoDownloadStatus = videoDownloadStatus;
+    notifyListeners();
   }
 
   /// Defines a delay in milliseconds between entering buffering state and displaying the loading spinner. Set null (default) to disable it.

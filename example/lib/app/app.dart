@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:chewie/chewie.dart';
@@ -107,10 +108,10 @@ class _ChewieDemoState extends State<ChewieDemo> {
     ];*/
 
     _chewieController = ChewieController(
-      videoPlayerController: _videoPlayerController1,
-      autoPlay: true,
-      looping: true,
-      /*progressIndicatorDelay:
+        videoPlayerController: _videoPlayerController1,
+        autoPlay: true,
+        looping: true,
+        /*progressIndicatorDelay:
           bufferDelay != null ? Duration(milliseconds: bufferDelay!) : null,
 
       additionalOptions: (context) {
@@ -122,8 +123,8 @@ class _ChewieDemoState extends State<ChewieDemo> {
           ),
         ];
       },*/
-      // subtitle: Subtitles(subtitles),
-      /*subtitleBuilder: (context, dynamic subtitle) => Container(
+        // subtitle: Subtitles(subtitles),
+        /*subtitleBuilder: (context, dynamic subtitle) => Container(
         padding: const EdgeInsets.all(10.0),
         child: subtitle is InlineSpan
             ? RichText(
@@ -135,26 +136,33 @@ class _ChewieDemoState extends State<ChewieDemo> {
               ),
       ),*/
 
-      // hideControlsTimer: const Duration(seconds: 1),
+        // hideControlsTimer: const Duration(seconds: 1),
 
-      // Try playing around with some of these other options:
+        // Try playing around with some of these other options:
 
-      // showControls: false,
-      // materialProgressColors: ChewieProgressColors(
-      //   playedColor: Colors.red,
-      //   handleColor: Colors.blue,
-      //   backgroundColor: Colors.grey,
-      //   bufferedColor: Colors.lightGreen,
-      // ),
-      // placeholder: Container(
-      //   color: Colors.grey,
-      // ),
-      // autoInitialize: true,]
+        // showControls: false,
+        // materialProgressColors: ChewieProgressColors(
+        //   playedColor: Colors.red,
+        //   handleColor: Colors.blue,
+        //   backgroundColor: Colors.grey,
+        //   bufferedColor: Colors.lightGreen,
+        // ),
+        // placeholder: Container(
+        //   color: Colors.grey,
+        // ),
+        // autoInitialize: true,]
 
-      downLoadVideoBuilder: (){
-        print("Prachan Downloaded");
-      }
-    );
+        downLoadVideoBuilder: () {
+          print("Prachan Downloaded");
+        });
+
+    Timer(const Duration(seconds: 5), () {
+      _chewieController?.updateVideoDownloadStatus(VideoDownloadStatus.downloading);
+    });
+
+    Timer(const Duration(seconds: 10), () {
+      _chewieController?.updateVideoDownloadStatus(VideoDownloadStatus.downloaded);
+    });
   }
 
   int currPlayIndex = 0;

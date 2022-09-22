@@ -397,15 +397,26 @@ class _MaterialControlsState extends State<MaterialControls> with SingleTickerPr
       child: Container(
         height: barHeight + (chewieController.isFullScreen ? 15.0 : 0),
         margin: const EdgeInsets.only(right: 8.0, left: 8),
-        child: const Center(
+        child: Center(
           child: Icon(
-            Icons.file_download_outlined,
+            _getIcon(),
             color: Colors.white,
             size: 20,
           ),
         ),
       ),
     );
+  }
+
+  IconData _getIcon() {
+    switch (chewieController.videoDownloadStatus) {
+      case VideoDownloadStatus.downloading:
+        return Icons.downloading_outlined;
+      case VideoDownloadStatus.notDownloaded:
+        return Icons.file_download_outlined;
+      case VideoDownloadStatus.downloaded:
+        return Icons.download_done_outlined;
+    }
   }
 
   GestureDetector _buildExpandButton() {
