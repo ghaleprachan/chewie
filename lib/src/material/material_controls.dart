@@ -312,7 +312,6 @@ class _MaterialControlsState extends State<MaterialControls> with SingleTickerPr
                     if (chewieController.isLive) const Expanded(child: Text('LIVE')) else _buildPosition(iconColor),
                     if (chewieController.allowMuting) _buildMuteButton(controller),
                     const Spacer(),
-                    _buildDownloadButton(),
                     if (chewieController.allowFullScreen) _buildExpandButton(),
                   ],
                 ),
@@ -399,24 +398,33 @@ class _MaterialControlsState extends State<MaterialControls> with SingleTickerPr
         margin: const EdgeInsets.only(right: 8.0, left: 8),
         padding: const EdgeInsets.symmetric(horizontal: 4),
         child: Center(
-          child: Icon(
-            _getIcon(),
-            color: Colors.white,
-            size: 20,
-          ),
+          child: _buildDownloadStateWidget(),
         ),
       ),
     );
   }
 
-  IconData _getIcon() {
+  Widget _buildDownloadStateWidget() {
     switch (chewieController.videoDownloadStatus) {
       case VideoDownloadStatus.downloading:
-        return Icons.downloading_outlined;
+        return chewieController.downloadingAnimation ??
+            const Icon(
+              Icons.downloading_outlined,
+              color: Colors.white,
+              size: 20,
+            );
       case VideoDownloadStatus.notDownloaded:
-        return Icons.file_download_outlined;
+        return const Icon(
+          Icons.file_download_outlined,
+          color: Colors.white,
+          size: 20,
+        );
       case VideoDownloadStatus.downloaded:
-        return Icons.download_done_outlined;
+        return const Icon(
+          Icons.download_done_outlined,
+          color: Colors.white,
+          size: 20,
+        );
     }
   }
 

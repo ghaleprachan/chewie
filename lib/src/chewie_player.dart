@@ -259,6 +259,7 @@ class ChewieController extends ChangeNotifier {
     this.autoInitialize = false,
     this.autoPlay = false,
     this.videoDownloadStatus = VideoDownloadStatus.notDownloaded,
+    this.downloadingAnimation,
     this.startAt,
     this.looping = false,
     this.fullScreenByDefault = false,
@@ -314,6 +315,7 @@ class ChewieController extends ChangeNotifier {
     ChewieProgressColors? cupertinoProgressColors,
     ChewieProgressColors? materialProgressColors,
     Widget? placeholder,
+    Widget? downloadingAnimation,
     Widget? overlay,
     bool? showControlsOnInitialize,
     bool? showOptions,
@@ -358,6 +360,7 @@ class ChewieController extends ChangeNotifier {
       videoDownloadStatus: videoDownloadStatus ?? this.videoDownloadStatus,
       startAt: startAt ?? this.startAt,
       looping: looping ?? this.looping,
+      downloadingAnimation: downloadingAnimation ?? this.downloadingAnimation,
       fullScreenByDefault: fullScreenByDefault ?? this.fullScreenByDefault,
       cupertinoProgressColors: cupertinoProgressColors ?? this.cupertinoProgressColors,
       materialProgressColors: materialProgressColors ?? this.materialProgressColors,
@@ -461,6 +464,8 @@ class ChewieController extends ChangeNotifier {
   /// Defines customised controls. Check [MaterialControls] or
   /// [CupertinoControls] for reference.
   final Widget? customControls;
+
+  Widget? downloadingAnimation;
 
   /// When the video playback runs into an error, you can build a custom
   /// error message.
