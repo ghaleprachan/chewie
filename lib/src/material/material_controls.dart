@@ -397,6 +397,7 @@ class _MaterialControlsState extends State<MaterialControls> with SingleTickerPr
       child: Container(
         height: barHeight + (chewieController.isFullScreen ? 15.0 : 0),
         margin: const EdgeInsets.only(right: 8.0, left: 8),
+        padding: const EdgeInsets.symmetric(horizontal: 4),
         child: Center(
           child: Icon(
             _getIcon(),
@@ -424,7 +425,8 @@ class _MaterialControlsState extends State<MaterialControls> with SingleTickerPr
       onTap: _onExpandCollapse,
       child: Container(
         height: barHeight + (chewieController.isFullScreen ? 15.0 : 0),
-        margin: const EdgeInsets.only(right: 12.0),
+        margin: EdgeInsets.only(right: 12.0 + (chewieController.isFullScreen ? 15.0 : 0)),
+        padding: const EdgeInsets.symmetric(horizontal: 4),
         child: Center(
           child: Icon(
             chewieController.isFullScreen ? Icons.fullscreen_exit : Icons.fullscreen,
