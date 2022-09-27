@@ -112,6 +112,7 @@ class _ChewieDemoState extends State<ChewieDemo> {
         autoPlay: true,
         looping: true,
         downloadingAnimation: Icon(Icons.person, size: 24,),
+        videoDownloadStatus: VideoDownloadStatus.downloaded,
         /*progressIndicatorDelay:
           bufferDelay != null ? Duration(milliseconds: bufferDelay!) : null,
 
