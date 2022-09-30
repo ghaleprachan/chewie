@@ -152,7 +152,7 @@ class _MaterialControlsState extends State<MaterialControls> with SingleTickerPr
           onPressed: () {
             Navigator.pop(context);
           },
-          icon: const Icon(Icons.arrow_back, color: Colors.grey),
+          icon: const Icon(Icons.arrow_back, color: Color(0xFF373D57)),
         ),
       ),
     );
