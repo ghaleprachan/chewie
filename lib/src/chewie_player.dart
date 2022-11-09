@@ -1,12 +1,12 @@
 import 'dart:async';
 
-import 'package:chewie/chewie.dart';
-import 'package:chewie/src/chewie_progress_colors.dart';
-import 'package:chewie/src/models/option_item.dart';
-import 'package:chewie/src/models/options_translation.dart';
-import 'package:chewie/src/models/subtitle_model.dart';
-import 'package:chewie/src/notifiers/player_notifier.dart';
-import 'package:chewie/src/player_with_controls.dart';
+import 'package:custom_chewie/chewie.dart';
+import 'package:custom_chewie/src/chewie_progress_colors.dart';
+import 'package:custom_chewie/src/models/option_item.dart';
+import 'package:custom_chewie/src/models/options_translation.dart';
+import 'package:custom_chewie/src/models/subtitle_model.dart';
+import 'package:custom_chewie/src/notifiers/player_notifier.dart';
+import 'package:custom_chewie/src/player_with_controls.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
